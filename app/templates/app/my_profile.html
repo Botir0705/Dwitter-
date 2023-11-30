@@ -1,0 +1,63 @@
+{% extends 'app/index.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+</head>
+<body>
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-8">
+        {% if profile.username == request.user %}
+        <h2 class="text-center">Your Dweets</h2>
+        {% else %}
+        <h2 class="text-center">{{profile}}'s Dweets</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% if profile in my_profile.follows.all %}
+                <button class="btn btn-danger text-center w-75 ml-lg-5" name="follow" value="unfollow">Unfollow</button>
+            {% else %}
+                <button class="btn btn-success text-center w-75 ml-lg-5" name="follow" value="follow">Follow</button>
+            {% endif %}
+        </form>
+        {% endif %}
+        {% for dweet in dweets %}
+            <div class="dweet mt-4 border border-dark shadow ml-3">
+                <h5>{{dweet.body}}</h5>
+                <p><small>- {{dweet.author|capfirst}} on {{dweet.created_on.date}}</small></p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="col-lg-4">
+        <a href="{% url 'all_profiles' %}" class="btn btn-outline-dark text-lg-center mt-4 ml-3" style="width: 80%;">All Profiles</a>
+        {% if profile.username == request.user %}
+        <h4 class="mt-4">You follow:</h4>
+        {% else %}
+        <h4 class="mt-4">{{profile}} follows:</h4>
+        {% endif %}
+            {% for profile in profile.follows.all %}
+                <a href="{% url 'detail_profile' profile.id %}">
+                    {{ profile }}
+                </a><br>
+            {% endfor %}
+        <br>
+        {% if profile.username == request.user %}
+        <h4>You're followed by:</h4>
+        {% else %}
+        <h4>{{profile}} is followed by:</h4>
+        {% endif %}
+        {% for profile in profile.followed_by.all %}
+                <a href="{% url 'detail_profile' profile.id %}">
+                    {{ profile }}
+                </a><br>
+        {% endfor %}
+        
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Welcome {{ request.user }}</title>
+    <style>
+        form{
+            padding: 10px;
+        }
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        .nav-bar{
+            height: 180px;
+
+        }
+        .bg-dark{
+            background-color: #4f868c!important;
+        }
+        .buttn{
+            margin-left: 800px;
+            margin-top: 40px;
+            display: inline;
+            height: 50px;
+        }
+        .dweet{
+            border-radius: 4px;
+            background-color: whitesmoke;
+            padding: 10px 10px 1px 10px;
+            margin: 5px;
+        }
+        .bbb{
+            background-color: #4f868c;
+            width: 410px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+        <div class="row m-4">
+                <a href="{% url 'index' %}" style="text-decoration: none;">
+                <h1 style="color: #fff;">Dwitter</h1>
+                {% if request.user.is_authenticated %}
+                <a href="{% url 'log_out' %}" style="margin-left: 800px;" class="btn btn-warning btn-lg pt-2">Logout</a>
+                <!-- <p class="text-white bg-danger" style="margin-left: 600px;">Welcome, {{request.user}}({{request.user.id}})</p> -->
+                {% else %}
+                <a href="{% url 'log_in' %}" class="btn btn-warning btn-lg mt-4" style="margin-left: 700px;height: 50px;margin-top: 10px;">Login</a>
+                {% endif %}
+            </a>
+        </div>
+    </div>
+{% block content %}
+<div class="row">
+    <div class="col-lg-7">
+        {% for dweet in dweets %}
+            <div class="dweet mt-2 border border-secondary ml-4 shadow-lg">
+                    <h5>{{dweet.body}}</h5>
+                    <p><small>- {{dweet.author}} on {{dweet.created_on}}</small></p> 
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="col-lg-5">
+        <a href="{% url 'all_profiles' %}" class="btn btn-outline-dark text-lg-center mt-4 ml-3" style="width: 86%;">All Profiles</a>
+        {% if request.user.is_authenticated %}
+            <h2 class="mt-lg-5 text-center">Add a Dweet</h2>
+        
+    <div class="form-text">
+        <form method="post"  style="width: 100%;">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" class="btn btn mt-2  bbb" name="" id="" value="Dweet">
+        </form>
+    </div>
+
+        {% else %}
+        <h3 class="mt-lg-5 text-center ">Login to dweet</h3>
+        {% endif %}
+    </div>
+</div>   
+
+
+{% endblock %}
+    
+  
+</body>
+</html>
