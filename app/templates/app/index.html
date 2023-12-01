@@ -48,7 +48,7 @@
                 <a href="{% url 'index' %}" style="text-decoration: none;">
                 <h1 style="color: #fff;">Dwitter</h1>
                 {% if request.user.is_authenticated %}
-                <a href="{% url 'log_out' %}" style="margin-left: 800px;" class="btn btn-warning btn-lg pt-2">Logout</a>
+                <a href="{% url 'log_out' %}" style="margin-left: 1100px;" class="btn btn-warning btn-lg pt-2">Logout</a>
                 <!-- <p class="text-white bg-danger" style="margin-left: 600px;">Welcome, {{request.user}}({{request.user.id}})</p> -->
                 {% else %}
                 <a href="{% url 'log_in' %}" class="btn btn-warning btn-lg mt-4" style="margin-left: 700px;height: 50px;margin-top: 10px;">Login</a>
